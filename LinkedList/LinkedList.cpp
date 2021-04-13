@@ -260,12 +260,17 @@ int LinkedList::erase_value(int ele)
 void LinkedList::reverse()
 {
     node *prev = head;
-    for (node *i = head->next; i != tail; i=i->next)
+    node *i = head->next;
+    while (i != NULL)
     {
         node *temp= i;
+        i = i->next;
         temp->next = prev;
-        prev = i;
+        prev = temp;
     }
+    this->tail = this->head;
+    this->tail->next = NULL;
+    this->head = prev;
 }
 
 void LinkedList::display()
@@ -284,30 +289,17 @@ int main(int argc, char const *argv[])
     list.push_front(2);
     list.push_front(3);
     list.push_front(4);
-    // list.display();
     
     list.pop_front();
     list.pop_front();
-    // list.display();
     list.push_front(10);
-    // list.display();
-    
+        
     list.pop_front();
-    // list.display();
     list.push_back(11);
     list.display();
 
     list.reverse();
     list.display();
-    
-    // list.pop_back();
-    // list.display();
-    // list.pop_back();
-    // list.display();
-    // list.pop_back();
-    // list.display();
-    // list.pop_back();
-    // list.display();
 
     return 0;
 }
