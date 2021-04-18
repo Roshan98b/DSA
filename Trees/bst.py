@@ -20,17 +20,20 @@ class Tree:
             if(root.left == None):
                 root.left = Node(data)
                 return
-            self.insert(root.left, data)
+            else:
+                self.insert(root.left, data)
         else:
             if(root.right == None):
                 root.right = Node(data)
                 return
-            self.insert(root.right, data)
+            else:
+                self.insert(root.right, data)
 
     def get_node_count(self, root):
         if (root == None):
             return 0
-        return self.get_node_count(root.left) + self.get_node_count(root.right) + 1
+        else:
+            return self.get_node_count(root.left) + self.get_node_count(root.right) + 1
 
     def is_in_tree(self, root, data):
         if (root == None):
@@ -57,27 +60,25 @@ class Tree:
     def get_height(self, root):
         if (root == None):
             return 0
-        elif (root.left == None):
-            return self.get_height(root.right) + 1
-        elif (root.right == None):
-            return self.get_height(root.left) + 1
         else:
-            return max(self.get_height(root.left) + 1, self.get_height(root.right) + 1)
+            return 1 + max(self.get_height(root.left), self.get_height(root.right))
 
 
     def get_min(self, root):
         if (root == None):
             return None
-        if (root.left == None):
+        elif (root.left == None):
             return root.data
-        return self.get_min(root.left)
+        else:
+            return self.get_min(root.left)
 
     def get_max(self, root):
         if (root == None):
             return None
-        if (root.right == None):
+        elif (root.right == None):
             return root.data
-        return self.get_max(root.right)
+        else:
+            return self.get_max(root.right)
 
     def delete_value(self, root, data, prev = None):
         if (root == None):
@@ -126,31 +127,35 @@ class Tree:
     def delete_tree(self, root):
         if (root == None):
             return
-        delete_tree(root.left)
-        delete_tree(root.right)
-        del (root)
+        else: 
+            delete_tree(root.left)
+            delete_tree(root.right)
+            del (root)
 
 
 def inorder(current):
     if (current == None):
         return
-    inorder(current.left)
-    print (current.data)
-    inorder(current.right)
+    else:
+        inorder(current.left)
+        print (current.data)
+        inorder(current.right)
 
 def preorder(current):
     if (current == None):
         return
-    print (current.data)
-    preorder(current.left)
-    preorder(current.right)    
+    else:
+        print (current.data)
+        preorder(current.left)
+        preorder(current.right)    
 
 def postorder(current):
     if (current == None):
         return
-    postorder(current.left)
-    postorder(current.right)
-    print (current.data)
+    else:
+        postorder(current.left)
+        postorder(current.right)
+        print (current.data)
 
 
 # Main function
