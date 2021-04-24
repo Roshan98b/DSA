@@ -1,7 +1,8 @@
 class BHeap:
 
     def __init__(self, data=[]):
-        self.heap = []
+        self.heap = data
+        self.index = {}
 
     def __swin(self, pos):
         parent = int(((pos - 2)/2) if (pos % 2) else (pos/2))
@@ -32,28 +33,41 @@ class BHeap:
             child2 = 2*pos + 2
 
     def __swap(self, a, b):
+        self.index[self.heap[a]] = b
+        self.index[self.heap[b]] = a
         temp = self.heap[a]
         self.heap[a] = self.heap[b]
         self.heap[b] = temp
 
     def insert(self, data):
         self.heap.append(data)
+        self.index[data] = len(self.heap)-1
         self.__swin(len(self.heap)-1)
 
     def poll(self):
         if (len(self.heap)):
             self.__swap(0, len(self.heap)-1)
             pop = self.heap.pop()
+            self.index.pop(pop)
             self.__sink(0)
             return pop
         else:
             return None
     
     def remove(self, data):
-        pass
+        if (data in self.index):
+            pos = self.index[data]
+            self.__swap(pos, len(self.heap)-1)
+            pop = self.heap.pop()
+            self.index.pop(pop)
+            self.__sink(pos)
+            self.__swin(pos)
+            return pop
+        else:
+            return None
 
     def display(self):
-        print (self.heap)
+        print (self.heap, self.index)
 
 if __name__ == "__main__":
 
@@ -67,7 +81,12 @@ if __name__ == "__main__":
     heap.poll()
     heap.poll()
     heap.display()
-    heap.poll()
-    heap.poll()
-    heap.poll()
+    heap.insert(9)
+    heap.insert(10)
+    heap.insert(11)
+    heap.insert(12)
+    heap.insert(13)
+    heap.insert(14)
+    heap.display()
+    print (heap.remove(7))
     heap.display()
