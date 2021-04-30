@@ -1,0 +1,12 @@
+trigger: none
+
+pool:
+  vmimage: ubuntu-latest
+
+stages:
+- stage: Build
+  jobs:
+    - job: BuildJob
+      steps:
+        - bash: |
+            echo "Hello World"

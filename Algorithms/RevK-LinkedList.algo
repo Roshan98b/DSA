@@ -1,0 +1,23 @@
+head
+
+rev(head, prev, k):
+    next = head->next
+    head->next = NULL
+    head = next
+    while (k-- > 1 and prev->next != NULL)
+        next = head->next
+        head->next = prev
+        prev = head
+        head = next
+    return (prev, head)
+
+
+actualrev(head)
+    prev = head
+    cnt = 0
+    while ((n/k)--)
+        (tail, next) = rev(head, prev, k)
+        list.append((head,tail))
+        head = next
+    for i in range(1,len(list))
+        list[i,0]->next = list[i+1,1]
