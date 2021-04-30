@@ -1,12 +1,49 @@
-trigger: none
+trigger: 
+- roshan
 
 pool:
-  vmimage: ubuntu-latest
+  name: Test-2
 
 stages:
 - stage: Build
   jobs:
-    - job: BuildJob
-      steps:
-        - bash: |
-            echo "Hello World"
+  - job: Build
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: 'service/*.sln'
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        command: 'build'
+        projects: 'service/*.sln'
+        arguments: '--no-restore --configuration $(BuildConfiguration)'
+
+- stage: Test
+  dependsOn: Build
+  jobs:
+  - job: TestandPublish
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: 'service/**/*.Test.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: 'publish'
+        publishWebProjects: false
+        projects: 'service/*.sln'
+        arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+      condition: succeededOrFailed()
